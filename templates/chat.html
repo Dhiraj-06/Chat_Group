@@ -588,7 +588,11 @@
 </div>
 
 <script>
-    var socket = io();
+    var socket = io({
+    transports: ["websocket"],
+    upgrade: false
+    });
+    
     var username = localStorage.getItem("username");
 
     if (!username) window.location.href = "/";
