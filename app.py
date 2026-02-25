@@ -6,14 +6,15 @@ import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
+
+# IMPORTANT
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode="eventlet")
 
-# MongoDB
-client = MongoClient("mongodb+srv://scremer61_db_user:CzNnzUb1n7lwNGRT@chatgroup.fehvgxy.mongodb.net/?appName=ChatGroup")
+# MongoDB (move this to Railway Variables later for security)
+client = MongoClient("mongodb+srv://scremer61_db_user:CzNnzUb1n7lwNGRT@chatgroup.fehvgxy.mongodb.net/?retryWrites=true&w=majority")
 db = client["chatdb"]
 messages_collection = db["messages"]
 
-# 🔥 Online Users Counter
 online_users = 0
 
 @app.route('/')
@@ -46,5 +47,7 @@ def handle_message(data):
     messages_collection.insert_one(message_data)
     send(data, broadcast=True)
 
+# 🚀 PRODUCTION RUN FIX
 if __name__ == "__main__":
-    app.run()
+    port = int(os.environ.get("PORT", 5000))
+    socketio.run(app, host="0.0.0.0", port=port)
