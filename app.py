@@ -1,3 +1,6 @@
+import eventlet
+eventlet.monkey_patch()
+
 from flask import Flask, render_template
 from flask_socketio import SocketIO, send, emit
 from datetime import datetime
@@ -8,8 +11,8 @@ app = Flask(__name__)
 application = app
 app.config['SECRET_KEY'] = 'secret!'
 
-# IMPORTANT
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
+# SocketIO (eventlet will be used automatically)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 # SQLite Database Setup
 conn = sqlite3.connect("chat.db", check_same_thread=False)
@@ -70,6 +73,6 @@ def handle_message(data):
     send(data, broadcast=True)
 
 
-# 🚀 PRODUCTION RUN FIX
 if __name__ == "__main__":
-    socketio.run(app, debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    socketio.run(app, host="0.0.0.0", port=port)
