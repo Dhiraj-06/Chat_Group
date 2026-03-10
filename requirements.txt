@@ -1,5 +1,2 @@
 flask
 flask-socketio
-pymongo
-eventlet
-gunicorn
