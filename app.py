@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 
 # IMPORTANT
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode="eventlet")
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
 
 # MongoDB (move this to Railway Variables later for security)
 client = MongoClient("mongodb+srv://scremer61_db_user:CzNnzUb1n7lwNGRT@chatgroup.fehvgxy.mongodb.net/?retryWrites=true&w=majority")
