@@ -5,6 +5,7 @@ import sqlite3
 import os
 
 app = Flask(__name__)
+application = app
 app.config['SECRET_KEY'] = 'secret!'
 
 # IMPORTANT
@@ -71,5 +72,4 @@ def handle_message(data):
 
 # 🚀 PRODUCTION RUN FIX
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    socketio.run(app, host="0.0.0.0", port=port)
+    socketio.run(app, debug=True)
