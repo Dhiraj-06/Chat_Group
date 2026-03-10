@@ -11,10 +11,8 @@ app = Flask(__name__)
 application = app
 app.config['SECRET_KEY'] = 'secret!'
 
-# SocketIO (eventlet will be used automatically)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-# SQLite Database Setup
 conn = sqlite3.connect("chat.db", check_same_thread=False)
 cursor = conn.cursor()
 
@@ -63,7 +61,6 @@ def handle_message(data):
     message = data['message']
     timestamp = str(datetime.now())
 
-    # Save message in SQLite
     cursor.execute(
         "INSERT INTO messages (username, message, timestamp) VALUES (?, ?, ?)",
         (username, message, timestamp)
